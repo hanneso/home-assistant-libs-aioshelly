@@ -45,6 +45,7 @@ async def async_start_scanner(  # pylint: disable=too-many-arguments
     interval_ms: int,
     window_ms: int,
     duration_ms: int,
+    ble_code: str,
 ) -> None:
     """Start scanner."""
     script_name_to_id = await _async_get_scripts_by_name(device)
@@ -56,8 +57,10 @@ async def async_start_scanner(  # pylint: disable=too-many-arguments
 
     # Not using format strings here because the script
     # code contains curly braces
+    if not ble_code:
+        ble_code = BLE_CODE
     code = (
-        BLE_CODE.replace(VAR_ACTIVE, "true" if active else "false")
+        ble_code.replace(VAR_ACTIVE, "true" if active else "false")
         .replace(VAR_EVENT_TYPE, event_type)
         .replace(VAR_VERSION, str(data_version))
         .replace(VAR_INTERVAL_MS, str(interval_ms))
